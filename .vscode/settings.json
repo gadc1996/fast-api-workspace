@@ -1,0 +1,13 @@
+{
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/.ssh": true,
+      "**/.cache": true,
+      "**/.docker": true,
+      "**/.vscode-server": true,
+      "**/.gnupg": true,
+      "**/.local": true,
+      "**/.bash_history": true,
+    }
+  }
+  

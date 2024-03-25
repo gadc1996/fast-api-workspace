@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    networks:
+      - workspace
+    volumes:
+      - ..:/app
+    # Set services env variables
+    env_file:
+      - ../.env.dev
+    # Set workspace env variables
+    environment:
+      - ZDOTDIR=/app/.dotfiles
+      - RDS_DB_NAME=development_db
+      - RDS_USERNAME=root
+      - RDS_PASSWORD=root
+      - RDS_HOSTNAME=mysql
+      - RDS_PORT=3306
+
+  mysql:
+    image: mysql:latest
+    networks:
+      - workspace
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: development_db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8081:80"
+    networks:
+      - workspace
+
+networks:
+  workspace:

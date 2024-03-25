@@ -1,0 +1,13 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = Alex Delgado
+	email = gadc1996@gmail.com
+[safe]
+	directory = %(prefix)///wsl.localhost/Ubuntu-22.04/home/gabriel/django-api
+	directory = /home/devcontainer
+[credential]
+	helper = "!f() { /home/devcontainer/.vscode-server/bin/0ee08df0cf4527e40edc9aa28f4b5bd38bbff2b2/node /tmp/vscode-remote-containers-511a675d-bdb4-4d21-a816-aff7214ce0fb.js git-credential-helper $*; }; f"
