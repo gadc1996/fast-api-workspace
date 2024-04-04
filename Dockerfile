@@ -1,29 +1,20 @@
-# Python image to use.
+# Use the official Python image from the Docker Hub
 FROM python:3.11-slim-bullseye
 
-# Set the working directory to /app
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /code
 
+# Copy the dependencies file to the working directory
+COPY ./requirements.txt /code/requirements.txt
 
-# Install apt-get packages
-RUN apt-get update && \
-    apt-get install -y \
-    pkg-config \
-    default-libmysqlclient-dev \
-    gcc
+# Install any needed packages
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-# copy the requirements file used for dependencies
-COPY requirements.txt .
+# Copy rest of the app code
+COPY ./app /code/app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
-RUN pip install gunicorn
-
-# Copy the rest of the working directory contents into the container at /app
-COPY src/. .
-
-# Expose port 8080
+# Expose the port the app runs on
 EXPOSE 8080
 
-# Run migrations and start server
-ENTRYPOINT python manage.py migrate && gunicorn --bind 0.0.0.0:8080 core.wsgi:application
+# Serve the app
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
